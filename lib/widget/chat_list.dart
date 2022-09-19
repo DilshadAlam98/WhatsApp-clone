@@ -5,27 +5,29 @@ import 'package:whatsapp_clone/widget/my_message_card.dart';
 import 'package:whatsapp_clone/widget/sender_message.dart';
 
 class ChatList extends StatelessWidget {
-  const ChatList({
+  ChatList({
     Key? key,
-    required this.name,
-    required this.profilePic,
+    this.name,
+    this.profilePic,
+    this.webView,
   }) : super(key: key);
-  final String name;
-  final String profilePic;
+  final String? name;
+  final String? profilePic;
+  bool? webView = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:webView==true?null: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: appBarColor,
-        title: Text(name),
+        title: Text(name ?? ""),
         centerTitle: false,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: CircleAvatar(
             radius: 14,
-            backgroundImage: NetworkImage(profilePic),
+            backgroundImage: NetworkImage(profilePic ?? ""),
           ),
         ),
         actions: [

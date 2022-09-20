@@ -10,6 +10,7 @@ class ContactList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: const EdgeInsets.only(top: 10),
+      shrinkWrap: true,
       itemCount: info.length,
       itemBuilder: (context, index) {
         return Column(

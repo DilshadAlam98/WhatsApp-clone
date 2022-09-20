@@ -14,43 +14,31 @@ class ChatList extends StatelessWidget {
   final String? name;
   final String? profilePic;
   bool? webView = false;
-
+final ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:webView==true?null: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: appBarColor,
-        title: Text(name ?? ""),
-        centerTitle: false,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: CircleAvatar(
-            radius: 14,
-            backgroundImage: NetworkImage(profilePic ?? ""),
-          ),
-        ),
-        actions: [
-          _actionIconButton(icon: Icons.video_camera_front),
-          _actionIconButton(icon: Icons.call),
-          _actionIconButton(icon: Icons.more_vert_outlined),
-        ],
-      ),
-      body: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          if (messages[index]['isMe'] == true) {
-            return MyMessageCard(
+      body: Scrollbar(
+        controller: _controller,
+        isAlwaysShown: true,
+        thickness: 8,
+        child: ListView.builder(
+          controller: _controller,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          itemCount: messages.length,
+          itemBuilder: (context, index) {
+            if (messages[index]['isMe'] == true) {
+              return MyMessageCard(
+                message: messages[index]['text'].toString(),
+                date: messages[index]['time'].toString(),
+              );
+            }
+            return SenderMessageCard(
               message: messages[index]['text'].toString(),
               date: messages[index]['time'].toString(),
             );
-          }
-          return SenderMessageCard(
-            message: messages[index]['text'].toString(),
-            date: messages[index]['time'].toString(),
-          );
-        },
+          },
+        ),
       ),
     );
   }

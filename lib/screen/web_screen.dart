@@ -36,7 +36,7 @@ class WebLayoutScreen extends StatelessWidget {
                 image: AssetImage(
                   "assets/backgroundImage.png",
                 ),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             child: Column(

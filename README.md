@@ -22,4 +22,5 @@ samples, guidance on mobile development, and a full API reference.
 
 ##Android Highlights
 
-<img width="315" alt="Screen Shot 2022-09-24 at 8 54 27 PM" src="https://user-images.githubusercontent.com/84621229/192106041-beb88dc2-8ca1-404a-bb45-21f6706436ae.png">
+
+<img width="313" alt="Screen Shot 2022-09-24 at 8 56 19 PM" src="https://user-images.githubusercontent.com/84621229/192106096-384686fb-5bde-45b5-b248-837712cb4cbd.png">

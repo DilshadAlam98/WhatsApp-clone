@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/widget/contact_list.dart';
 
@@ -11,8 +12,9 @@ class MobileScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: _appBar(),
-        body: const SafeArea(
-          child: ContactList(),
+        body:  SafeArea(
+          child: TabBarView(
+              children:tabPage.map((e) => e).toList()),
         ),
       ),
     );
@@ -40,11 +42,7 @@ class MobileScreen extends StatelessWidget {
         labelStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        tabs: [
-          _tabs("CHATS"),
-          _tabs("STATUS"),
-          _tabs("CHATS"),
-        ],
+        tabs: tabs.map((e) => _tabs(e)).toList(),
       ),
     );
   }

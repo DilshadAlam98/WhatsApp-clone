@@ -89,7 +89,7 @@ class WebLayoutScreen extends StatelessWidget {
                                   style: BorderStyle.none,
                                 ),
                               ),
-                              contentPadding: const EdgeInsets.only(left: 20,top: 4,bottom: 4),
+                              contentPadding: const EdgeInsets.only(left: 20),
                             ),
                           ),
                         ),

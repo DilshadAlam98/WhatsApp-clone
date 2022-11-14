@@ -11,9 +11,8 @@ class MobileScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: _appBar(),
-        body:  SafeArea(
-          child: TabBarView(
-              children:tabPage.map((e) => e).toList()),
+        body: SafeArea(
+          child: TabBarView(children: tabPage.map((e) => e).toList()),
         ),
       ),
     );

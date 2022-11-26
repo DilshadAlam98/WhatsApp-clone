@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/constant/info.dart';
-import 'package:whatsapp_clone/widget/chat_list.dart';
+import 'package:whatsapp_clone/constant/route_constant.dart';
 
 class ContactList extends StatelessWidget {
   const ContactList({Key? key}) : super(key: key);
@@ -60,13 +60,18 @@ class ContactList extends StatelessWidget {
     );
   }
 
-  _navigateToChatScreen(BuildContext context,
-      {required String name, required String profilePic}) {
-    Navigator.push(
+  _navigateToChatScreen(
+    BuildContext context, {
+    required String name,
+    required String profilePic,
+  }) {
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) =>  ChatList(name: name,profilePic: profilePic),
-      ),
+      RouteConstant.chatScreen,
+      arguments: {
+        'name': name,
+        'profilePic': profilePic,
+      },
     );
   }
 }

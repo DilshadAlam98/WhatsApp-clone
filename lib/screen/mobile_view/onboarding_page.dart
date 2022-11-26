@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
-import 'package:whatsapp_clone/screen/mobile_view/register_your_self.dart';
+import 'package:whatsapp_clone/constant/global_variable.dart';
+import 'package:whatsapp_clone/constant/route_constant.dart';
+import 'package:whatsapp_clone/model/country_model.dart';
 
 class OnBoardingView extends StatelessWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -8,19 +12,33 @@ class OnBoardingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _contentInfo(),
-              _selectYourCountry(),
-              _phoneNumberRow(),
-              _buttonContent(context)
-            ],
-          ),
-        ),
+      body: BlocBuilder<OnboardingCubit, OnboardingState>(
+        builder: (context, state) {
+          if (state.networkState == NetworkState.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state.networkState == NetworkState.error) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _contentInfo(),
+                  _selectYourCountry(state.countryIsoList),
+                  _phoneNumberRow(state.countryIsoList),
+                  _buttonContent(context)
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -53,14 +71,14 @@ class OnBoardingView extends StatelessWidget {
     );
   }
 
-  Widget _selectYourCountry() {
+  Widget _selectYourCountry(CountryIsoList? countryIsoList) {
     return DropdownButton(
       isExpanded: true,
-      items: ["india", "UAE", "America"]
+      items: countryIsoList?.countryIso
           .map(
             (e) => DropdownMenuItem(
               value: e,
-              child: Text(e),
+              child: Text(e.name!),
             ),
           )
           .toList(),
@@ -68,7 +86,7 @@ class OnBoardingView extends StatelessWidget {
     );
   }
 
-  Widget _phoneNumberRow() {
+  Widget _phoneNumberRow(CountryIsoList? countryIsoList) {
     return Row(
       children: [
         SizedBox(
@@ -76,11 +94,11 @@ class OnBoardingView extends StatelessWidget {
           // height: 65,
           child: DropdownButton(
             isExpanded: true,
-            items: ["+91", "273", "+810"]
+            items: countryIsoList?.countryIso
                 .map(
                   (e) => DropdownMenuItem(
                     value: e,
-                    child: Text(e),
+                    child: Text(e.code!),
                   ),
                 )
                 .toList(),
@@ -116,12 +134,10 @@ class OnBoardingView extends StatelessWidget {
               ),
               backgroundColor: tabColor),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        const RegisterYourSelf()),
-                (Route<dynamic> route) => false);
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.registerYourSelf,
+            );
           },
           child: const Text(
             "Next",

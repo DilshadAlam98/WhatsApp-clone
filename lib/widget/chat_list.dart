@@ -9,12 +9,11 @@ class ChatList extends StatelessWidget {
     Key? key,
     this.name,
     this.profilePic,
-    this.webView,
+    this.webView = false,
   }) : super(key: key);
   final String? name;
   final String? profilePic;
-  bool? webView = false;
-  final ScrollController _controller = ScrollController();
+  final bool? webView;
   final _messageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -25,13 +24,13 @@ class ChatList extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: appBarColor,
-        title: Text(name??""),
+        title: Text(name ?? ""),
         centerTitle: false,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: CircleAvatar(
             radius: 14,
-            backgroundImage: NetworkImage(profilePic??""),
+            backgroundImage: NetworkImage(profilePic ?? ""),
           ),
         ),
         actions: [

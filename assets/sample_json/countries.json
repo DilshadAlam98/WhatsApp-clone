@@ -1,0 +1,22 @@
+[
+  {
+      "name": "India",
+      "code": "+91"
+  },
+  {
+      "name": "UAE",
+      "code": "+971"
+  },
+  {
+      "name": "Pakistan",
+      "code": "+92"
+  },
+  {
+      "name": "Afghanistan",
+      "code": "+93"
+  },
+  {
+      "name": "USA",
+      "code": "+1"
+  }
+]

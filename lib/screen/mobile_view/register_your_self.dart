@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
-import 'package:whatsapp_clone/screen/mobile_view/mobile_screen.dart';
+import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/widget/app_textfield.dart';
 
 class RegisterYourSelf extends StatelessWidget {
@@ -66,11 +66,10 @@ class RegisterYourSelf extends StatelessWidget {
               ),
               backgroundColor: tabColor),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const MobileScreen()),
-                (Route<dynamic> route) => false);
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.mobileScreen,
+            );
           },
           child: const Text(
             "Finish",

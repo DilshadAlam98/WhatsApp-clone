@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
-import 'package:whatsapp_clone/constant/global_variable.dart';
 import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/model/country_model.dart';
 
@@ -14,16 +13,16 @@ class OnBoardingView extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<OnboardingCubit, OnboardingState>(
         builder: (context, state) {
-          if (state.networkState == NetworkState.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state.networkState == NetworkState.error) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+          // if (state.networkState == NetworkState.loading) {
+          //   return const Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
+          // if (state.networkState == NetworkState.error) {
+          //   return const Center(
+          //     child: CircularProgressIndicator(),
+          //   );
+          // }
           return SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16),

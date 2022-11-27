@@ -4,8 +4,8 @@ import 'package:whatsapp_clone/constant/info.dart';
 import 'package:whatsapp_clone/widget/my_message_card.dart';
 import 'package:whatsapp_clone/widget/sender_message.dart';
 
-class ChatList extends StatelessWidget {
-  ChatList({
+class ChatScreen extends StatelessWidget {
+  ChatScreen({
     Key? key,
     this.name,
     this.profilePic,

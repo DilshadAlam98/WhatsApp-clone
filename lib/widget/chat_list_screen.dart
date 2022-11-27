@@ -3,8 +3,8 @@ import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/constant/info.dart';
 import 'package:whatsapp_clone/constant/route_constant.dart';
 
-class ContactList extends StatelessWidget {
-  const ContactList({Key? key}) : super(key: key);
+class ChatListScreen extends StatelessWidget {
+  const ChatListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

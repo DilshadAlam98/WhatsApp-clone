@@ -49,6 +49,14 @@ class _MobileScreenState extends State<MobileScreen>
 
   Widget _floatingButtonType(ChatCubitState state) {
     switch (state.tabIndex) {
+      case 0:
+        return _floatingButton(
+          icon: Icons.message,
+          callback: () => Navigator.pushNamed(
+            context,
+            RouteConstant.contactListScreen,
+          ),
+        );
       case 1:
         return _floatingButton(
           icon: Icons.edit,
@@ -67,13 +75,7 @@ class _MobileScreenState extends State<MobileScreen>
         );
 
       default:
-        return _floatingButton(
-          icon: Icons.message,
-          callback: () => Navigator.pushNamed(
-            context,
-            RouteConstant.contactListScreen,
-          ),
-        );
+        return const SizedBox.shrink();
     }
   }
 

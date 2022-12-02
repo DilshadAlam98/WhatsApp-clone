@@ -8,11 +8,12 @@ class ChatCubitState<T> extends Equatable {
   final NetworkState? networkState;
   final T? errorResponse;
 
-  const ChatCubitState(
-      {this.errorResponse,
-      this.networkState,
-      this.tabController,
-      this.tabIndex});
+  const ChatCubitState({
+    this.errorResponse,
+    this.networkState,
+    this.tabController,
+    this.tabIndex = 0,
+  });
 
   ChatCubitState copyWith({
     final NetworkState? networkState,

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:whatsapp_clone/constant/global_variable.dart';
 import 'package:whatsapp_clone/model/country_model.dart';
 import 'package:whatsapp_clone/repository/onboarding_repo.dart';
@@ -19,15 +20,17 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       if (country.countryIso.isNotEmpty) {
         emit(state.copyWith(
           countryIsoList: country,
+          buttonController: RoundedLoadingButtonController(),
           networkState: NetworkState.completed,
           errorResponse: null,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
-          countryIsoList: null,
-          errorResponse: e,
-          networkState: NetworkState.error));
+        countryIsoList: null,
+        errorResponse: e,
+        networkState: NetworkState.error,
+      ));
     }
   }
 
@@ -79,5 +82,11 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     }
 
     return null;
+  }
+
+  void verifyYourNumber() async {
+    state.buttonController?.start();
+    emit(state.copyWith(isOtpSent: true, networkState: NetworkState.completed));
+    state.buttonController?.reset();
   }
 }

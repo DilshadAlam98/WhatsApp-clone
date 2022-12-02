@@ -5,7 +5,6 @@ import 'package:whatsapp_clone/bloc/chat/chat_cubit_cubit.dart';
 import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/constant/route_manager.dart';
-import 'package:whatsapp_clone/screen/mobile_view/mobile_screen.dart';
 import 'package:whatsapp_clone/screen/mobile_view/onboarding_screen.dart';
 import 'package:whatsapp_clone/utils/responsive_layout.dart';
 import 'package:whatsapp_clone/screen/web_view/web_screen.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
         onGenerateRoute: RouteManager.onGenerateRoute,
         home: const ResponsiveLayoutScreen(
-          mobileLayoutScreen: MobileScreen(),
+          mobileLayoutScreen: OnBoardingScreen(),
           webLayoutScreen: WebLayoutScreen(),
         ),
       ),

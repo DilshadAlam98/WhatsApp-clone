@@ -1,17 +1,17 @@
 class CountryIsoList {
-  List<_CountryIso> countryIso = [];
+  List<CountryIso> countryIso = [];
   CountryIsoList.fromJson(List json) {
     for (var j in json) {
-      countryIso.add(_CountryIso.fromJson(j));
+      countryIso.add(CountryIso.fromJson(j));
     }
   }
 }
 
-class _CountryIso {
+class CountryIso {
   String? name;
   String? code;
 
-  _CountryIso.fromJson(Map<String, dynamic> json) {
+  CountryIso.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     code = json['code'];
   }

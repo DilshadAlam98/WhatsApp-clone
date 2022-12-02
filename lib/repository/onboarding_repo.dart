@@ -5,6 +5,7 @@ class OnBoardingRepo {
   final _apiServices = ApiSource();
 
   Future<CountryIsoList> getCountries() async {
-    return await _apiServices.getCountries();
+    final data = await _apiServices.getCountries();
+    return data;
   }
 }

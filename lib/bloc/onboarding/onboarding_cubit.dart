@@ -16,7 +16,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
     try {
       final country = await _onBoardingRepo.getCountries();
-      if (country.countryIso.isEmpty) {
+      if (country.countryIso.isNotEmpty) {
         emit(state.copyWith(
           countryIsoList: country,
           networkState: NetworkState.completed,
@@ -29,5 +29,55 @@ class OnboardingCubit extends Cubit<OnboardingState> {
           errorResponse: e,
           networkState: NetworkState.error));
     }
+  }
+
+  void onCountryChange(CountryIso? changedCountry) {
+    emit(state.copyWith(country: changedCountry, countryCode: changedCountry));
+  }
+
+  void onCountryCodeChange(CountryIso? countryCode) {
+    emit(state.copyWith(countryCode: countryCode));
+  }
+
+  String? validateCountryName(CountryIso? value) {
+    if (value?.name == null) {
+      return "Please select country name";
+    }
+    return null;
+  }
+
+  String? validateCountryCode(CountryIso? value) {
+    if (value?.code == null) {
+      return "Please select country code";
+    }
+    return null;
+  }
+
+  String? validatePhoneNumber(String? phone) {
+    if (phone == null || phone.isEmpty) {
+      return "Phone number is required";
+    }
+    if (phone.length != 10) {
+      return "Phone number should be 10 digit";
+    }
+    if (canSubmit(phone)) {
+      return "Can't use special character";
+    }
+    return null;
+  }
+
+  bool canSubmit(String value) {
+    if (value.contains(',') || value.contains(".") || value.contains("/")) {
+      return true;
+    }
+    return false;
+  }
+
+  String? validateForm(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Value is Required";
+    }
+
+    return null;
   }
 }

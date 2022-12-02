@@ -10,4 +10,6 @@ class RouteConstant {
   static const String contactListScreen = '/contactListScreen';
   static const String addStatusScreen = '/addStatusScreen';
   static const String selectContactToCall = '/selectContactToCall';
+  static const String profileScreen = '/profileScreen';
+  static const String appTheme = '/appTheme';
 }

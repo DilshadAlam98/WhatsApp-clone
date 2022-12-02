@@ -18,8 +18,8 @@ class _MobileScreenState extends State<MobileScreen>
   late TabController _tabController;
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
-    context.read<ChatCubitCubit>().toggleTab(_tabController, () {});
+    _tabController = TabController(length: tabs.length, vsync: this);
+    context.read<ChatCubitCubit>().initializeTabController(_tabController);
     super.initState();
   }
 
@@ -33,7 +33,7 @@ class _MobileScreenState extends State<MobileScreen>
             length: state.tabController!.length,
             child: Scaffold(
               floatingActionButton: _floatingButtonType(state),
-              appBar: _appBar(state),
+              appBar: _appBar(state, context),
               body: SafeArea(
                 child: TabBarView(
                   controller: state.tabController!,
@@ -48,15 +48,7 @@ class _MobileScreenState extends State<MobileScreen>
   }
 
   Widget _floatingButtonType(ChatCubitState state) {
-    switch (state.tabController!.index) {
-      case 0:
-        return _floatingButton(
-          icon: Icons.message,
-          callback: () => Navigator.pushNamed(
-            context,
-            RouteConstant.contactListScreen,
-          ),
-        );
+    switch (state.tabIndex) {
       case 1:
         return _floatingButton(
           icon: Icons.edit,
@@ -68,12 +60,20 @@ class _MobileScreenState extends State<MobileScreen>
       case 2:
         return _floatingButton(
           icon: Icons.call,
-          callback: () =>
-              Navigator.pushNamed(context, RouteConstant.selectContactToCall),
+          callback: () => Navigator.pushNamed(
+            context,
+            RouteConstant.selectContactToCall,
+          ),
         );
 
       default:
-        return const SizedBox.shrink();
+        return _floatingButton(
+          icon: Icons.message,
+          callback: () => Navigator.pushNamed(
+            context,
+            RouteConstant.contactListScreen,
+          ),
+        );
     }
   }
 
@@ -91,7 +91,7 @@ class _MobileScreenState extends State<MobileScreen>
     );
   }
 
-  AppBar _appBar(ChatCubitState state) {
+  AppBar _appBar(ChatCubitState state, BuildContext context) {
     return AppBar(
       backgroundColor: appBarColor,
       centerTitle: false,
@@ -106,7 +106,7 @@ class _MobileScreenState extends State<MobileScreen>
       ),
       actions: [
         _searchButton(icon: Icons.search),
-        _popUpMenu(),
+        _popUpMenu(context),
       ],
       bottom: TabBar(
         indicatorColor: tabColor,
@@ -122,15 +122,17 @@ class _MobileScreenState extends State<MobileScreen>
     );
   }
 
-  PopupMenuButton<String> _popUpMenu() {
+  PopupMenuButton<String> _popUpMenu(BuildContext context) {
     return PopupMenuButton(
+      padding: const EdgeInsets.only(right: 15),
       icon: const Icon(
         Icons.more_vert,
         color: Colors.grey,
       ),
       color: appBarColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      onSelected: _onMenuTapRoute,
+      onSelected: ((value) =>
+          context.read<ChatCubitCubit>().onMenuTapRoute(value, context)),
       itemBuilder: (context) => menuItems
           .map(
             (e) => PopupMenuItem(
@@ -147,21 +149,6 @@ class _MobileScreenState extends State<MobileScreen>
           )
           .toList(),
     );
-  }
-
-  _onMenuTapRoute(String value) {
-    switch (value) {
-      case 'New group':
-        return Navigator.pushNamed(context, RouteConstant.newGroup);
-      case 'New broadcast':
-        return Navigator.pushNamed(context, RouteConstant.newBroadcast);
-      case 'Starred messages':
-        return Navigator.pushNamed(context, RouteConstant.starredMessage);
-      case 'Payments':
-        return Navigator.pushNamed(context, RouteConstant.payments);
-      case 'Settings':
-        return Navigator.pushNamed(context, RouteConstant.settings);
-    }
   }
 
   Tab _tabs(String text) {

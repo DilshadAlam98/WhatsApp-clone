@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
+import 'package:whatsapp_clone/bloc/onboarding_cubit/onboarding_cubit.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 
 class EnterYourOTP extends StatelessWidget {

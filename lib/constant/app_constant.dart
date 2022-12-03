@@ -18,3 +18,10 @@ final List<String> menuItems = [
   'Payments',
   'Settings'
 ];
+
+enum NetworkState { initial, loading, completed, error }
+
+class Collection {
+  static String users = "Users";
+  static String userPreferenceKey = "1212sad453";
+}

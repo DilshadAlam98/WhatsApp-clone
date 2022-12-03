@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_cubit.dart';
+import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_state.dart';
+import 'package:whatsapp_clone/bloc/profile_cubit/profile_cubit.dart';
+import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
+import 'package:whatsapp_clone/model/user_res_req_model.dart';
 
+// ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
 
+  String? name;
+  String? phoneNumber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,50 +28,72 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          const SizedBox(height: 15),
-          _changeProfilePicSection(context),
-          const SizedBox(height: 10),
-          _listTileSection(
-            leading: Icons.person,
-            trailing: Icons.edit,
-            title: "Name",
-            subtitle: "Dilshad Alam",
-            callback: () => _openBottomSheet(context: context),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 60.0),
-            child: Text(
-              "This is not your username or pin. This name will be visible to your WhatsApp contact",
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w500,
-                fontSize: 13,
-              ),
-            ),
-          ),
-          _listTileSection(
-            leading: Icons.error_outline_outlined,
-            trailing: Icons.edit,
-            title: "About",
-            subtitle: "Alhamdulillah for everything",
-            callback: () {},
-          ),
-          _listTileSection(
-            leading: Icons.call,
-            trailing: Icons.edit,
-            title: "Phone",
-            subtitle: "958802XXX9",
-            callback: () {},
-          ),
-        ],
+      body: BlocBuilder<MobileCubit, MobileCubitState>(
+        builder: (context, mobileState) {
+          return BlocBuilder<ProfileCubit, ProfileState>(
+            builder: (context, profileState) {
+              if (profileState.networkState == NetworkState.loading ||
+                  mobileState.networkState == NetworkState.loading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return ListView(
+                children: [
+                  const SizedBox(height: 15),
+                  _changeProfilePicSection(context, mobileState.user!),
+                  const SizedBox(height: 10),
+                  _listTileSection(
+                    leading: Icons.person,
+                    trailing: Icons.edit,
+                    title: "Name",
+                    subtitle: mobileState.user!.name!,
+                    callback: () async => await _openBottomSheet(
+                      context: context,
+                      name: mobileState.user!.name,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 60.0),
+                    child: Text(
+                      "This is not your username or pin. This name will be visible to your WhatsApp contact",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  _listTileSection(
+                    leading: Icons.error_outline_outlined,
+                    trailing: Icons.edit,
+                    title: "About",
+                    subtitle: mobileState.user!.about!,
+                    callback: () {},
+                  ),
+                  _listTileSection(
+                    leading: Icons.call,
+                    trailing: Icons.edit,
+                    title: "Phone",
+                    subtitle: mobileState.user!.whatsappNumber!,
+                    callback: () async => await _openBottomSheet(
+                      context: context,
+                      mobileNumber: mobileState.user!.whatsappNumber,
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
 
   Future<void> _openBottomSheet({
     required BuildContext context,
+    String? name,
+    String? mobileNumber,
     bool isChangeProfile = false,
   }) async {
     return await showModalBottomSheet(
@@ -105,11 +137,23 @@ class ProfileScreen extends StatelessWidget {
                     _chooseProfileFromSection(
                       chooseFrom: "Camera",
                       icon: Icons.camera_alt_outlined,
+                      callback: () => context
+                          .read<ProfileCubit>()
+                          .pickProfilePicture(ImageSource.camera)
+                          .then(
+                            (value) => Navigator.pop(context),
+                          ),
                     ),
                     const SizedBox(width: 25),
                     _chooseProfileFromSection(
                       chooseFrom: "Gallery",
                       icon: Icons.photo_album_rounded,
+                      callback: () => context
+                          .read<ProfileCubit>()
+                          .pickProfilePicture(ImageSource.gallery)
+                          .then(
+                            (value) => Navigator.pop(context),
+                          ),
                     ),
                   ],
                 )
@@ -136,11 +180,19 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      initialValue: name ?? mobileNumber,
                       enableIMEPersonalizedLearning: true,
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(horizontal: 15),
                       ),
+                      onChanged: (value) {
+                        if (name == null) {
+                          phoneNumber = value;
+                        } else {
+                          name = value;
+                        }
+                      },
                     ),
                   ),
                   IconButton(
@@ -167,7 +219,12 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   MaterialButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => context
+                        .read<ProfileCubit>()
+                        .updateNameOrPhone(name: name, phoneNumber: phoneNumber)
+                        .then(
+                          (value) => Navigator.pop(context),
+                        ),
                     child: const Text(
                       "Save",
                       style: TextStyle(
@@ -189,32 +246,36 @@ class ProfileScreen extends StatelessWidget {
   Widget _chooseProfileFromSection({
     required IconData icon,
     required String chooseFrom,
+    required VoidCallback callback,
   }) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: callback,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              color: tabColor,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: tabColor,
+          const SizedBox(height: 8),
+          Text(
+            chooseFrom,
+            style: const TextStyle(
+              fontSize: 14,
+              letterSpacing: 1.2,
+              color: Colors.white70,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          chooseFrom,
-          style: const TextStyle(
-            fontSize: 14,
-            letterSpacing: 1.2,
-            color: Colors.white70,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 10)
-      ],
+          const SizedBox(height: 10)
+        ],
+      ),
     );
   }
 
@@ -260,13 +321,17 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _changeProfilePicSection(BuildContext context) {
+  Widget _changeProfilePicSection(BuildContext context, UserReqResModel user) {
     return Stack(
       children: [
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: CircleAvatar(
             radius: 65,
+            backgroundColor: messageColor,
+            backgroundImage: NetworkImage(
+              user.profilePic!,
+            ),
           ),
         ),
         Positioned(

@@ -1,30 +1,43 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:whatsapp_clone/constant/global_variable.dart';
+import 'package:whatsapp_clone/constant/app_constant.dart';
+import 'package:whatsapp_clone/constant/image_constant.dart';
 import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/model/country_model.dart';
-import 'package:whatsapp_clone/repository/onboarding_repo.dart';
+import 'package:whatsapp_clone/model/user_res_req_model.dart';
+import 'package:whatsapp_clone/repository/firebase_repo.dart';
 import 'package:whatsapp_clone/utils/dialog_utils.dart';
-
+import 'package:whatsapp_clone/utils/local_preference.dart';
 part 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
   OnboardingCubit() : super(const OnboardingState()) {
     getCountries();
+    getUserFromPreference();
   }
-  final _onBoardingRepo = OnBoardingRepo();
+  final _firebaseRepo = FirebaseRepo();
+  final _currentUserUid = FirebaseAuth.instance.currentUser?.uid;
+  final _localPreference = LocalPreference();
+
   void getCountries() async {
     emit(state.copyWith(networkState: NetworkState.loading));
 
     try {
-      final country = await _onBoardingRepo.getCountries();
+      final country = await _firebaseRepo.getCountries();
+      final assetImage = await getImageFileFromAssets(ImageConstant.person);
       if (country.countryIso.isNotEmpty) {
         emit(state.copyWith(
           countryIsoList: country,
           buttonController: RoundedLoadingButtonController(),
+          pickedImage: assetImage,
           networkState: NetworkState.completed,
           errorResponse: null,
         ));
@@ -103,6 +116,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     emit(state.copyWith(
       buttonController: state.buttonController?..start(),
       isOtpSent: false,
+      whatsAppNumber: phoneNumber,
       errorResponse: null,
     ));
     try {
@@ -157,14 +171,10 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     try {
       final authCredential =
           await FirebaseAuth.instance.signInWithCredential(_credential);
-
       if (authCredential.user != null) {
-        //Firebase store stuff
-
-        ///then redirect user
         Navigator.pushReplacementNamed(
           context,
-          RouteConstant.mobileScreen,
+          RouteConstant.registerYourSelf,
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -176,9 +186,67 @@ class OnboardingCubit extends Cubit<OnboardingState> {
       emit(
         state.copyWith(
           buttonController: state.buttonController?..reset(),
+          verificationId: null,
           errorResponse: e,
         ),
       );
     }
+  }
+
+  void createUser(BuildContext context, String about, String name) async {
+    emit(state.copyWith(
+      buttonController: state.buttonController?..start(),
+    ));
+    final imageUrl = await _firebaseRepo.getImageUrl(state.pickedImage!);
+    var userReq = UserReqResModel(
+      about: about,
+      country: state.country?.name,
+      createdAt: Timestamp.now(),
+      name: name,
+      uid: _currentUserUid,
+      whatsappNumber: state.whatsAppNumber,
+      profilePic: imageUrl,
+    );
+    final isUserCreated = await _firebaseRepo.createUser(userReq);
+    if (isUserCreated) {
+      await Navigator.pushReplacementNamed(
+        context,
+        RouteConstant.mobileScreen,
+      );
+    }
+    emit(state.copyWith(buttonController: state.buttonController?..reset()));
+  }
+
+  Future<void> pickProfilePicture(ImageSource imageSource) async {
+    final imagePicker = ImagePicker();
+
+    final pickedImage = await imagePicker.pickImage(source: imageSource);
+    if (pickedImage != null) {
+      emit(state.copyWith(pickedImage: pickedImage));
+    }
+  }
+
+  Future<XFile> getImageFileFromAssets(String path) async {
+    File? files;
+    try {
+      final byteData = await rootBundle.load(path);
+      final file = await File('${(await getTemporaryDirectory()).path}/$path')
+          .create(recursive: true);
+      files = await file.writeAsBytes(byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return XFile(files!.path);
+  }
+
+  void getUserFromPreference() {
+    emit(state.copyWith(networkState: NetworkState.loading));
+    _localPreference.getUserFromPreference().listen((user) {
+      emit(state.copyWith(
+        networkState: NetworkState.completed,
+        localPreference: user,
+      ));
+    });
   }
 }

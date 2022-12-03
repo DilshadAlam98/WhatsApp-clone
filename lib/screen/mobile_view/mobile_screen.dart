@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp_clone/bloc/chat/chat_cubit_cubit.dart';
-import 'package:whatsapp_clone/bloc/chat/chat_cubit_state.dart';
+import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_cubit.dart';
+import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_state.dart';
 import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/constant/route_constant.dart';
@@ -19,15 +19,15 @@ class _MobileScreenState extends State<MobileScreen>
   @override
   void initState() {
     _tabController = TabController(length: tabs.length, vsync: this);
-    context.read<ChatCubitCubit>().initializeTabController(_tabController);
+    context.read<MobileCubit>().initializeTabController(_tabController);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: context.watch<ChatCubitCubit>(),
-      child: BlocBuilder<ChatCubitCubit, ChatCubitState>(
+      value: context.watch<MobileCubit>(),
+      child: BlocBuilder<MobileCubit, MobileCubitState>(
         builder: (context, state) {
           return DefaultTabController(
             length: state.tabController!.length,
@@ -47,7 +47,7 @@ class _MobileScreenState extends State<MobileScreen>
     );
   }
 
-  Widget _floatingButtonType(ChatCubitState state) {
+  Widget _floatingButtonType(MobileCubitState state) {
     switch (state.tabIndex) {
       case 0:
         return _floatingButton(
@@ -93,7 +93,7 @@ class _MobileScreenState extends State<MobileScreen>
     );
   }
 
-  AppBar _appBar(ChatCubitState state, BuildContext context) {
+  AppBar _appBar(MobileCubitState state, BuildContext context) {
     return AppBar(
       backgroundColor: appBarColor,
       centerTitle: false,
@@ -108,7 +108,7 @@ class _MobileScreenState extends State<MobileScreen>
       ),
       actions: [
         _searchButton(icon: Icons.search),
-        _popUpMenu(context),
+        _popUpMenu(context, state),
       ],
       bottom: TabBar(
         indicatorColor: tabColor,
@@ -124,7 +124,8 @@ class _MobileScreenState extends State<MobileScreen>
     );
   }
 
-  PopupMenuButton<String> _popUpMenu(BuildContext context) {
+  PopupMenuButton<String> _popUpMenu(
+      BuildContext context, MobileCubitState state) {
     return PopupMenuButton(
       padding: const EdgeInsets.only(right: 15),
       icon: const Icon(
@@ -133,8 +134,9 @@ class _MobileScreenState extends State<MobileScreen>
       ),
       color: appBarColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      onSelected: ((value) =>
-          context.read<ChatCubitCubit>().onMenuTapRoute(value, context)),
+      onSelected: ((value) => context
+          .read<MobileCubit>()
+          .onMenuTapRoute(value, context, state.user!)),
       itemBuilder: (context) => menuItems
           .map(
             (e) => PopupMenuItem(

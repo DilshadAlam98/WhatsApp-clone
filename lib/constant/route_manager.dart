@@ -73,7 +73,7 @@ class RouteManager {
         );
       case RouteConstant.profileScreen:
         return MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
+          builder: (context) => ProfileScreen(),
         );
       case RouteConstant.appTheme:
         return MaterialPageRoute(

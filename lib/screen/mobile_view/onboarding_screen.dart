@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
-import 'package:whatsapp_clone/constant/global_variable.dart';
+import 'package:whatsapp_clone/bloc/onboarding_cubit/onboarding_cubit.dart';
+import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/screen/mobile_view/verify_your_number_scree.dart';
 import 'package:whatsapp_clone/screen/mobile_view/verify_your_otp_screen.dart';
 
@@ -26,6 +26,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: BlocBuilder<OnboardingCubit, OnboardingState>(
+            bloc: context.watch<OnboardingCubit>(),
             builder: (context, state) {
               if (state.networkState == NetworkState.loading) {
                 return const Center(

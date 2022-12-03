@@ -27,17 +27,22 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  cached_network_image: ^3.2.3
+  cloud_firestore: ^4.1.0
   cupertino_icons: ^1.0.2
   equatable: ^2.0.5
-  fake_cloud_firestore: ^2.0.1
   firebase_auth: ^4.1.5
   firebase_core: ^2.3.0
+  firebase_storage: ^11.0.6
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   fluttertoast: ^8.1.1
+  image_picker: ^0.8.6
+  path_provider: ^2.0.11
   pin_code_fields: ^7.4.0
   rounded_loading_button: ^2.1.0
+  rx_shared_preferences: ^3.0.0
   status_view: ^0.0.2
 
 dev_dependencies:
@@ -58,6 +63,7 @@ flutter:
   assets:
     - assets/
     - assets/sample_json/countries.json
+    - assets/person.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

@@ -9,17 +9,22 @@ class OnboardingState<T> extends Equatable {
   final bool isOtpSent;
   final RoundedLoadingButtonController? buttonController;
   final String? verificationId;
+  final String? whatsAppNumber;
+  final UserReqResModel? localPreference;
+  final XFile? pickedImage;
 
-  const OnboardingState({
-    this.errorResponse,
-    this.networkState,
-    this.countryIsoList,
-    this.countryCode,
-    this.country,
-    this.isOtpSent = false,
-    this.buttonController,
-    this.verificationId,
-  });
+  const OnboardingState(
+      {this.errorResponse,
+      this.networkState,
+      this.countryIsoList,
+      this.countryCode,
+      this.country,
+      this.isOtpSent = false,
+      this.buttonController,
+      this.verificationId,
+      this.whatsAppNumber,
+      this.localPreference,
+      this.pickedImage});
 
   OnboardingState copyWith({
     final NetworkState? networkState,
@@ -30,6 +35,9 @@ class OnboardingState<T> extends Equatable {
     final bool? isOtpSent,
     final RoundedLoadingButtonController? buttonController,
     final String? verificationId,
+    final String? whatsAppNumber,
+    final UserReqResModel? localPreference,
+    final XFile? pickedImage,
   }) {
     return OnboardingState(
       networkState: networkState ?? this.networkState,
@@ -40,6 +48,9 @@ class OnboardingState<T> extends Equatable {
       isOtpSent: isOtpSent ?? this.isOtpSent,
       buttonController: buttonController ?? this.buttonController,
       verificationId: verificationId ?? this.verificationId,
+      whatsAppNumber: whatsAppNumber ?? this.whatsAppNumber,
+      localPreference: localPreference ?? this.localPreference,
+      pickedImage: pickedImage ?? this.pickedImage,
     );
   }
 
@@ -55,6 +66,9 @@ class OnboardingState<T> extends Equatable {
         errorResponse,
         country,
         isOtpSent,
-        buttonController
+        buttonController,
+        whatsAppNumber,
+        localPreference,
+        pickedImage
       ];
 }

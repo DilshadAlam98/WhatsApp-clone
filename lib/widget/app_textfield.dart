@@ -12,7 +12,7 @@ class AppTextField extends StatelessWidget {
 
   final String hintText;
   final Function(String?) onChanged;
-  final String Function(String?)? validator;
+  final String? Function(String?)? validator;
 
   final int? maxLines;
   @override

@@ -15,7 +15,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(source: imageSource);
     if (pickedImage != null) {
-      updateProfilePic(pickedImage);
+      await updateProfilePic(pickedImage);
       emit(state.copyWith(
         pickedImage: pickedImage,
         networkState: NetworkState.completed,
@@ -24,7 +24,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(networkState: NetworkState.error));
   }
 
-  void updateProfilePic(XFile profilePic) async {
+  Future<void> updateProfilePic(XFile profilePic) async {
     final profileUrl = await _firebaseRepo.getImageUrl(profilePic);
     return _firebaseRepo.updateProfilePic(profileUrl);
   }

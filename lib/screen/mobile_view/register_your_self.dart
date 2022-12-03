@@ -77,16 +77,23 @@ class _RegisterYourSelfState extends State<RegisterYourSelf> {
           backgroundImage: FileImage(File(state.pickedImage!.path)),
         ),
         Positioned(
-          bottom: 0,
-          right: -8,
-          child: IconButton(
-            onPressed: () async => await _openBottomSheet(context: context),
-            icon: const Icon(
-              Icons.camera_alt,
-              color: tabColor,
+          bottom: 3,
+          right: MediaQuery.of(context).size.width * 0.003,
+          child: GestureDetector(
+            onTap: () async => await _openBottomSheet(context: context),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: tabColor,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.camera_alt_rounded,
+                size: 18,
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }

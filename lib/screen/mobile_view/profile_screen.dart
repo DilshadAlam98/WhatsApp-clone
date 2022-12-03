@@ -32,54 +32,57 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, mobileState) {
           return BlocBuilder<ProfileCubit, ProfileState>(
             builder: (context, profileState) {
-              if (profileState.networkState == NetworkState.loading ||
-                  mobileState.networkState == NetworkState.loading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView(
+              return Stack(
                 children: [
-                  const SizedBox(height: 15),
-                  _changeProfilePicSection(context, mobileState.user!),
-                  const SizedBox(height: 10),
-                  _listTileSection(
-                    leading: Icons.person,
-                    trailing: Icons.edit,
-                    title: "Name",
-                    subtitle: mobileState.user!.name!,
-                    callback: () async => await _openBottomSheet(
-                      context: context,
-                      name: mobileState.user!.name,
+                  if (profileState.networkState == NetworkState.loading ||
+                      mobileState.networkState == NetworkState.loading)
+                    const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 60.0),
-                    child: Text(
-                      "This is not your username or pin. This name will be visible to your WhatsApp contact",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
+                  ListView(
+                    children: [
+                      const SizedBox(height: 15),
+                      _changeProfilePicSection(context, mobileState.user!),
+                      const SizedBox(height: 10),
+                      _listTileSection(
+                        leading: Icons.person,
+                        trailing: Icons.edit,
+                        title: "Name",
+                        subtitle: mobileState.user!.name!,
+                        callback: () async => await _openBottomSheet(
+                          context: context,
+                          name: mobileState.user!.name,
+                        ),
                       ),
-                    ),
-                  ),
-                  _listTileSection(
-                    leading: Icons.error_outline_outlined,
-                    trailing: Icons.edit,
-                    title: "About",
-                    subtitle: mobileState.user!.about!,
-                    callback: () {},
-                  ),
-                  _listTileSection(
-                    leading: Icons.call,
-                    trailing: Icons.edit,
-                    title: "Phone",
-                    subtitle: mobileState.user!.whatsappNumber!,
-                    callback: () async => await _openBottomSheet(
-                      context: context,
-                      mobileNumber: mobileState.user!.whatsappNumber,
-                    ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 60.0),
+                        child: Text(
+                          "This is not your username or pin. This name will be visible to your WhatsApp contact",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                      _listTileSection(
+                        leading: Icons.error_outline_outlined,
+                        trailing: Icons.edit,
+                        title: "About",
+                        subtitle: mobileState.user!.about!,
+                        callback: () {},
+                      ),
+                      _listTileSection(
+                        leading: Icons.call,
+                        trailing: Icons.edit,
+                        title: "Phone",
+                        subtitle: mobileState.user!.whatsappNumber!,
+                        callback: () async => await _openBottomSheet(
+                          context: context,
+                          mobileNumber: mobileState.user!.whatsappNumber,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );

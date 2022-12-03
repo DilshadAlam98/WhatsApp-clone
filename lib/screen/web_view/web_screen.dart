@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
-import 'package:whatsapp_clone/widget/chat_list.dart';
-import 'package:whatsapp_clone/widget/contact_list.dart';
+import 'package:whatsapp_clone/constant/image_constant.dart';
+import 'package:whatsapp_clone/widget/chat_screen.dart';
+import 'package:whatsapp_clone/widget/chat_list_screen.dart';
 import 'package:whatsapp_clone/widget/web_chat_app_bar.dart';
 import 'package:whatsapp_clone/widget/web_profile_bar.dart';
 import 'package:whatsapp_clone/widget/web_search_bar.dart';
@@ -21,7 +22,7 @@ class WebLayoutScreen extends StatelessWidget {
                 children: const [
                   WebProfileBar(),
                   WebSearchBar(),
-                  ContactList(),
+                  ChatListScreen(),
                 ],
               ),
             ),
@@ -34,7 +35,7 @@ class WebLayoutScreen extends StatelessWidget {
               ),
               image: DecorationImage(
                 image: AssetImage(
-                  "assets/backgroundImage.png",
+                  ImageConstant.backgroundImage,
                 ),
                 fit: BoxFit.contain,
               ),
@@ -43,8 +44,8 @@ class WebLayoutScreen extends StatelessWidget {
               children: [
                 const ChatAppBar(),
                 const SizedBox(height: 20),
-                 Expanded(
-                  child: ChatList(webView:true),
+                Expanded(
+                  child: ChatScreen(webView: true),
                 ),
                 Container(
                   height: MediaQuery.of(context).size.height * 0.07,

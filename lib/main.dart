@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone/bloc/bloc_utils/bloc_observer.dart';
@@ -9,8 +10,10 @@ import 'package:whatsapp_clone/screen/mobile_view/onboarding_screen.dart';
 import 'package:whatsapp_clone/utils/responsive_layout.dart';
 import 'package:whatsapp_clone/screen/web_view/web_screen.dart';
 
-void main() {
+void main() async {
   Bloc.observer = MyAppBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

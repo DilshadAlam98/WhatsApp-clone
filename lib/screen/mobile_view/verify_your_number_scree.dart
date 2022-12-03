@@ -6,20 +6,22 @@ import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/model/country_model.dart';
 
 class VerifyYourNumber extends StatelessWidget {
-  const VerifyYourNumber(
-      {Key? key,
-      required this.state,
-      required this.formCodeKey,
-      required this.formCountryKey,
-      required this.formPhoneKey,
-      this.onTap})
-      : super(key: key);
+  const VerifyYourNumber({
+    Key? key,
+    required this.state,
+    required this.formCodeKey,
+    required this.formCountryKey,
+    required this.formPhoneKey,
+    required this.phoneNumberController,
+    this.onTap,
+  }) : super(key: key);
 
   final OnboardingState state;
   final GlobalKey<FormState> formCodeKey;
   final GlobalKey<FormState> formCountryKey;
   final GlobalKey<FormState> formPhoneKey;
   final VoidCallback? onTap;
+  final TextEditingController phoneNumberController;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +100,7 @@ class VerifyYourNumber extends StatelessWidget {
         Form(
           key: formCodeKey,
           child: SizedBox(
-            width: 100,
+            width: 80,
             height: 65,
             child: DropdownButtonFormField(
                 decoration: const InputDecoration(
@@ -124,13 +126,14 @@ class VerifyYourNumber extends StatelessWidget {
                     context.read<OnboardingCubit>().onCountryCodeChange(value)),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 20),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(bottom: 4),
           child: Form(
             key: formPhoneKey,
             child: TextFormField(
+              controller: phoneNumberController,
               maxLength: 10,
               validator: (String? phone) =>
                   context.read<OnboardingCubit>().validatePhoneNumber(phone),

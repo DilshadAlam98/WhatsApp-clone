@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
 import 'package:whatsapp_clone/constant/global_variable.dart';
-import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/screen/mobile_view/verify_your_number_scree.dart';
 import 'package:whatsapp_clone/screen/mobile_view/verify_your_otp_screen.dart';
 
@@ -17,6 +16,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final _formCodeKey = GlobalKey<FormState>();
   final _formCountryKey = GlobalKey<FormState>();
   final _formPhoneKey = GlobalKey<FormState>();
+  final _phoneNumberController = TextEditingController();
+  final _otpController = TextEditingController();
+  final _otpFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,22 +40,27 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               if (state.isOtpSent) {
                 return EnterYourOTP(
                   state: state,
+                  otpController: _otpController,
+                  otpFormKey: _otpFormKey,
                   onTap: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      RouteConstant.mobileScreen,
-                    );
+                    if (isOtpValidate) {
+                      context
+                          .read<OnboardingCubit>()
+                          .verifyYourOTP(_otpController.text.trim(), context);
+                    }
                   },
                 );
               }
               return VerifyYourNumber(
                 state: state,
+                phoneNumberController: _phoneNumberController,
                 formCodeKey: _formCodeKey,
                 formCountryKey: _formCountryKey,
                 formPhoneKey: _formPhoneKey,
                 onTap: () {
-                  if (isValidate) {
-                    context.read<OnboardingCubit>().verifyYourNumber();
+                  if (isNumberValidate) {
+                    context.read<OnboardingCubit>().verifyYourNumber(
+                        _phoneNumberController.text.trim(), context);
                   }
                 },
               );
@@ -64,7 +71,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  bool get isValidate => (_formCountryKey.currentState!.validate() &&
+  bool get isOtpValidate => (_otpFormKey.currentState!.validate());
+
+  bool get isNumberValidate => (_formCountryKey.currentState!.validate() &&
       _formCodeKey.currentState!.validate() &&
       _formPhoneKey.currentState!.validate());
 }

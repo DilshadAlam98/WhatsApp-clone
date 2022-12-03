@@ -8,6 +8,7 @@ class OnboardingState<T> extends Equatable {
   final CountryIso? countryCode;
   final bool isOtpSent;
   final RoundedLoadingButtonController? buttonController;
+  final String? verificationId;
 
   const OnboardingState({
     this.errorResponse,
@@ -17,6 +18,7 @@ class OnboardingState<T> extends Equatable {
     this.country,
     this.isOtpSent = false,
     this.buttonController,
+    this.verificationId,
   });
 
   OnboardingState copyWith({
@@ -27,15 +29,18 @@ class OnboardingState<T> extends Equatable {
     final CountryIso? countryCode,
     final bool? isOtpSent,
     final RoundedLoadingButtonController? buttonController,
+    final String? verificationId,
   }) {
     return OnboardingState(
-        networkState: networkState ?? this.networkState,
-        countryIsoList: countryIsoList ?? this.countryIsoList,
-        errorResponse: errorResponse ?? this.errorResponse,
-        country: country ?? this.country,
-        countryCode: countryCode ?? this.countryCode,
-        isOtpSent: isOtpSent ?? this.isOtpSent,
-        buttonController: buttonController ?? this.buttonController);
+      networkState: networkState ?? this.networkState,
+      countryIsoList: countryIsoList ?? this.countryIsoList,
+      errorResponse: errorResponse ?? this.errorResponse,
+      country: country ?? this.country,
+      countryCode: countryCode ?? this.countryCode,
+      isOtpSent: isOtpSent ?? this.isOtpSent,
+      buttonController: buttonController ?? this.buttonController,
+      verificationId: verificationId ?? this.verificationId,
+    );
   }
 
   @override

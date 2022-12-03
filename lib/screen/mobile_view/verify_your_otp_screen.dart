@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:whatsapp_clone/bloc/onboarding/onboarding_cubit.dart';
@@ -9,10 +10,14 @@ class EnterYourOTP extends StatelessWidget {
     Key? key,
     this.onTap,
     required this.state,
+    required this.otpController,
+    required this.otpFormKey,
   }) : super(key: key);
 
   final OnboardingState state;
   final VoidCallback? onTap;
+  final TextEditingController otpController;
+  final GlobalKey<FormState> otpFormKey;
 
   @override
   Widget build(BuildContext context) {
@@ -44,30 +49,40 @@ class EnterYourOTP extends StatelessWidget {
         const SizedBox(
           height: 30,
         ),
-        PinCodeTextField(
-          appContext: context,
-          length: 6,
-          obscureText: false,
-          keyboardType: TextInputType.number,
-          animationType: AnimationType.fade,
-          pinTheme: PinTheme(
-            shape: PinCodeFieldShape.box,
-            activeColor: messageColor,
-            borderRadius: BorderRadius.circular(5),
-            fieldHeight: 50,
-            fieldWidth: 40,
-            inactiveFillColor: Colors.grey,
-            inactiveColor: Colors.grey,
-            selectedFillColor: Colors.white.withOpacity(0.8),
-            errorBorderColor: Colors.red,
-            selectedColor: Colors.white.withOpacity(0.8),
-            borderWidth: 2,
-            fieldOuterPadding: const EdgeInsets.all(3),
-            activeFillColor: messageColor,
+        Form(
+          key: otpFormKey,
+          child: PinCodeTextField(
+            controller: otpController,
+            appContext: context,
+            length: 6,
+            autoFocus: true,
+            obscureText: false,
+            autoUnfocus: true,
+            errorTextSpace: 30,
+            cursorColor: messageColor,
+            cursorWidth: 2.5,
+            validator: context.read<OnboardingCubit>().validateOtp,
+            keyboardType: TextInputType.number,
+            animationType: AnimationType.fade,
+            pinTheme: PinTheme(
+              shape: PinCodeFieldShape.box,
+              activeColor: messageColor,
+              borderRadius: BorderRadius.circular(5),
+              fieldHeight: 50,
+              fieldWidth: 40,
+              inactiveFillColor: Colors.grey,
+              inactiveColor: Colors.grey,
+              selectedFillColor: Colors.white.withOpacity(0.8),
+              errorBorderColor: Colors.red,
+              selectedColor: Colors.white.withOpacity(0.8),
+              borderWidth: 2,
+              fieldOuterPadding: const EdgeInsets.all(3),
+              activeFillColor: messageColor,
+            ),
+            animationDuration: const Duration(milliseconds: 300),
+            enableActiveFill: true,
+            onChanged: (String value) {},
           ),
-          animationDuration: const Duration(milliseconds: 300),
-          enableActiveFill: true,
-          onChanged: (value) {},
         ),
         const SizedBox(height: 10),
         SizedBox(

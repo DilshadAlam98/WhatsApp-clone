@@ -102,6 +102,7 @@ class ProfileScreen extends StatelessWidget {
     return await showModalBottomSheet(
       context: context,
       elevation: 10,
+      isScrollControlled: true,
       backgroundColor: appBarColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -112,7 +113,8 @@ class ProfileScreen extends StatelessWidget {
       builder: (BuildContext context) {
         if (isChangeProfile) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -165,7 +167,11 @@ class ProfileScreen extends StatelessWidget {
           );
         }
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -183,11 +189,13 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      autofocus: true,
                       initialValue: name ?? mobileNumber,
-                      enableIMEPersonalizedLearning: true,
+                      textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                       ),
                       onChanged: (value) {
                         if (name == null) {

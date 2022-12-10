@@ -21,7 +21,7 @@ final List<String> menuItems = [
 
 enum NetworkState { initial, loading, completed, error }
 
-class Collection {
+class CollectionKeys {
   static String users = "Users";
   static String userPreferenceKey = "1212sad453";
 }

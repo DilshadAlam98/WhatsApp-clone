@@ -5,6 +5,7 @@ import 'package:whatsapp_clone/bloc/bloc_utils/bloc_observer.dart';
 import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_cubit.dart';
 import 'package:whatsapp_clone/bloc/onboarding_cubit/onboarding_cubit.dart';
 import 'package:whatsapp_clone/bloc/profile_cubit/profile_cubit.dart';
+import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
 import 'package:whatsapp_clone/constant/route_manager.dart';
 import 'package:whatsapp_clone/screen/mobile_view/mobile_screen.dart';
@@ -55,7 +56,12 @@ class App extends StatelessWidget {
     return BlocBuilder<OnboardingCubit, OnboardingState>(
       bloc: context.watch<OnboardingCubit>(),
       builder: (context, state) {
-        if (state.localPreference != null) {
+        if (state.networkState == NetworkState.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state.uid != null) {
           return const ResponsiveLayoutScreen(
             mobileLayoutScreen: MobileScreen(),
             webLayoutScreen: WebLayoutScreen(),

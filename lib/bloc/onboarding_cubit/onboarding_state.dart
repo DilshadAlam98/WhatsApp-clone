@@ -11,6 +11,7 @@ class OnboardingState<T> extends Equatable {
   final String? verificationId;
   final String? whatsAppNumber;
   final UserReqResModel? localPreference;
+  final String? uid;
   final XFile? pickedImage;
 
   const OnboardingState(
@@ -24,6 +25,7 @@ class OnboardingState<T> extends Equatable {
       this.verificationId,
       this.whatsAppNumber,
       this.localPreference,
+      this.uid,
       this.pickedImage});
 
   OnboardingState copyWith({
@@ -37,6 +39,7 @@ class OnboardingState<T> extends Equatable {
     final String? verificationId,
     final String? whatsAppNumber,
     final UserReqResModel? localPreference,
+    final String? uid,
     final XFile? pickedImage,
   }) {
     return OnboardingState(
@@ -50,6 +53,7 @@ class OnboardingState<T> extends Equatable {
       verificationId: verificationId ?? this.verificationId,
       whatsAppNumber: whatsAppNumber ?? this.whatsAppNumber,
       localPreference: localPreference ?? this.localPreference,
+      uid: uid ?? this.uid,
       pickedImage: pickedImage ?? this.pickedImage,
     );
   }

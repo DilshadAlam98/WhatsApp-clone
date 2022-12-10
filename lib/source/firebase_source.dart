@@ -16,7 +16,7 @@ class FirebaseSource {
     bool isUserCreated = false;
     try {
       final doc = await _firestore
-          .collection(Collection.users)
+          .collection(CollectionKeys.users)
           .doc(_currentUserUid)
           .get();
 
@@ -34,7 +34,7 @@ class FirebaseSource {
 
   Stream<UserReqResModel> fetchCurrentUser() {
     return _firestore
-        .collection(Collection.users)
+        .collection(CollectionKeys.users)
         .doc(_currentUserUid)
         .snapshots()
         .map((event) {
@@ -52,7 +52,7 @@ class FirebaseSource {
 
   Future<void> updateProfilePic(String profilePic) async {
     return await _firestore
-        .collection(Collection.users)
+        .collection(CollectionKeys.users)
         .doc(_currentUserUid)
         .update({"profile_pic": profilePic});
   }
@@ -64,21 +64,21 @@ class FirebaseSource {
     final fieldToBeUpdate =
         phoneNumber != null ? {"whatsapp_Number": phoneNumber} : {"name": name};
     return _firestore
-        .collection(Collection.users)
+        .collection(CollectionKeys.users)
         .doc(_currentUserUid)
         .update(fieldToBeUpdate);
   }
 
   Future<void> updateAbout(String? about) async {
     return _firestore
-        .collection(Collection.users)
+        .collection(CollectionKeys.users)
         .doc(_currentUserUid)
         .update({"about": about});
   }
 
   Future<bool> isUserAlreadyExist() async {
     final doc = await _firestore
-        .collection(Collection.users)
+        .collection(CollectionKeys.users)
         .doc(_currentUserUid)
         .get();
     return doc.exists;

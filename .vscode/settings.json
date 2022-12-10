@@ -4,6 +4,7 @@
     "firestore",
     "Fluttertoast",
     "RGBO",
+    "rxdart",
     "Unfocus",
     "vsync"
   ]

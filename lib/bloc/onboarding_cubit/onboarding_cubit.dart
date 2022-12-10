@@ -253,11 +253,8 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   void getUserFromPreference() {
     emit(state.copyWith(networkState: NetworkState.loading));
-    _localPreference.getUserFromPreference().listen((user) {
-      emit(state.copyWith(
-        networkState: NetworkState.completed,
-        localPreference: user,
-      ));
+    _localPreference.getUserFromPreference().listen((uid) {
+      emit(state.copyWith(networkState: NetworkState.completed, uid: uid));
     });
   }
 }

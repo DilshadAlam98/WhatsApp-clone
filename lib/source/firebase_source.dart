@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -75,5 +74,13 @@ class FirebaseSource {
         .collection(Collection.users)
         .doc(_currentUserUid)
         .update({"about": about});
+  }
+
+  Future<bool> isUserAlreadyExist() async {
+    final doc = await _firestore
+        .collection(Collection.users)
+        .doc(_currentUserUid)
+        .get();
+    return doc.exists;
   }
 }

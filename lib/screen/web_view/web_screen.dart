@@ -44,7 +44,7 @@ class WebLayoutScreen extends StatelessWidget {
               children: [
                 const ChatAppBar(),
                 const SizedBox(height: 20),
-                Expanded(
+                const Expanded(
                   child: ChatScreen(webView: true),
                 ),
                 Container(

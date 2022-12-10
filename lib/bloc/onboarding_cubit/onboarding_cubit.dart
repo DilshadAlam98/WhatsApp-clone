@@ -171,11 +171,22 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     try {
       final authCredential =
           await FirebaseAuth.instance.signInWithCredential(_credential);
+      final isUserAlreadyExist = await _firebaseRepo.isUserAlreadyExist();
       if (authCredential.user != null) {
-        Navigator.pushReplacementNamed(
-          context,
-          RouteConstant.registerYourSelf,
-        );
+        switch (isUserAlreadyExist) {
+          case true:
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.mobileScreen,
+            );
+            break;
+          default:
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.registerYourSelf,
+            );
+            break;
+        }
       }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.toString());

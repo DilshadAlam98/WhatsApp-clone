@@ -44,11 +44,11 @@ class MobileCubit extends Cubit<MobileCubitState> {
       errorResponse: null,
     ));
     try {
-      _firebaseRepo.fetchCurrentUser().listen((event) {
-        // _localPreference.setUserToPreference(user).listen((event) {});
+      _firebaseRepo.fetchCurrentUser().listen((user) {
+        _localPreference.setUserToPreference(user).listen((event) {});
         emit(state.copyWith(
           networkState: NetworkState.completed,
-          user: event,
+          user: user,
           errorResponse: null,
         ));
       });

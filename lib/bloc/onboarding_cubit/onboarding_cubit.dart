@@ -171,11 +171,22 @@ class OnboardingCubit extends Cubit<OnboardingState> {
     try {
       final authCredential =
           await FirebaseAuth.instance.signInWithCredential(_credential);
+      final isUserAlreadyExist = await _firebaseRepo.isUserAlreadyExist();
       if (authCredential.user != null) {
-        Navigator.pushReplacementNamed(
-          context,
-          RouteConstant.registerYourSelf,
-        );
+        switch (isUserAlreadyExist) {
+          case true:
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.mobileScreen,
+            );
+            break;
+          default:
+            Navigator.pushReplacementNamed(
+              context,
+              RouteConstant.registerYourSelf,
+            );
+            break;
+        }
       }
     } on FirebaseAuthException catch (e) {
       debugPrint(e.toString());
@@ -242,11 +253,8 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   void getUserFromPreference() {
     emit(state.copyWith(networkState: NetworkState.loading));
-    _localPreference.getUserFromPreference().listen((user) {
-      emit(state.copyWith(
-        networkState: NetworkState.completed,
-        localPreference: user,
-      ));
+    _localPreference.getUserFromPreference().listen((uid) {
+      emit(state.copyWith(networkState: NetworkState.completed, uid: uid));
     });
   }
 }

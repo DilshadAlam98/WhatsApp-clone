@@ -39,4 +39,8 @@ class FirebaseRepo {
   Future<void> updateAbout(String about) async {
     return await _firebaseSource.updateAbout(about);
   }
+
+  Future<bool> isUserAlreadyExist() async {
+    return await _firebaseSource.isUserAlreadyExist();
+  }
 }

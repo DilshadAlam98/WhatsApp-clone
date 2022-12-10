@@ -6,6 +6,7 @@ import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_state.dart';
 import 'package:whatsapp_clone/bloc/profile_cubit/profile_cubit.dart';
 import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
+import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/model/user_res_req_model.dart';
 
 // ignore: must_be_immutable
@@ -70,7 +71,11 @@ class ProfileScreen extends StatelessWidget {
                         trailing: Icons.edit,
                         title: "About",
                         subtitle: mobileState.user!.about!,
-                        callback: () {},
+                        callback: () => Navigator.pushNamed(
+                            context, RouteConstant.aboutPage,
+                            arguments: {
+                              "about": mobileState.user!.about!,
+                            }),
                       ),
                       _listTileSection(
                         leading: Icons.call,

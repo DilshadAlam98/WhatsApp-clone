@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/constant/route_constant.dart';
+import 'package:whatsapp_clone/screen/mobile_view/about_your_thoughts.dart';
 import 'package:whatsapp_clone/screen/mobile_view/add_status_screen.dart';
 import 'package:whatsapp_clone/screen/mobile_view/app_theme.dart';
 import 'package:whatsapp_clone/screen/mobile_view/contact_list_screen.dart';
@@ -78,6 +79,13 @@ class RouteManager {
       case RouteConstant.appTheme:
         return MaterialPageRoute(
           builder: (context) => const AppTheme(),
+        );
+      case RouteConstant.aboutPage:
+        final arg = settings.arguments as Map;
+        return MaterialPageRoute(
+          builder: (context) => AboutYourThoughts(
+            about: arg['about'],
+          ),
         );
     }
     return MaterialPageRoute(

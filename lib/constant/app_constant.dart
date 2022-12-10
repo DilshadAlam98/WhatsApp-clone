@@ -25,3 +25,17 @@ class Collection {
   static String users = "Users";
   static String userPreferenceKey = "1212sad453";
 }
+
+List<String> aboutList = [
+  "Available",
+  "Busy",
+  "At school",
+  "At the movies",
+  "At work",
+  "Battery about to die",
+  "Can't talk, WhatsApp only",
+  "In a meeting",
+  "At the gym",
+  "Sleeping",
+  "Urgent call only",
+];

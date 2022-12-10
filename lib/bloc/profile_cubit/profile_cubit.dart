@@ -32,4 +32,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> updateNameOrPhone({String? name, String? phoneNumber}) async {
     return await _firebaseRepo.updateNameOrPhone(name, phoneNumber);
   }
+
+  Future<void> updateAbout(String about) async {
+    return await _firebaseRepo.updateAbout(about);
+  }
 }

@@ -29,10 +29,14 @@ class FirebaseRepo {
   }
 
   Future<void> updateProfilePic(String profilePic) async {
-    return _firebaseSource.updateProfilePic(profilePic);
+    return await _firebaseSource.updateProfilePic(profilePic);
   }
 
   Future<void> updateNameOrPhone(String? name, String? phoneNumber) async {
-    return _firebaseSource.updateNameOrPhone(name, phoneNumber);
+    return await _firebaseSource.updateNameOrPhone(name, phoneNumber);
+  }
+
+  Future<void> updateAbout(String about) async {
+    return await _firebaseSource.updateAbout(about);
   }
 }

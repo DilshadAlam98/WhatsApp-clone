@@ -6,6 +6,7 @@ import 'package:whatsapp_clone/bloc/mobile_cubit/mobile_state.dart';
 import 'package:whatsapp_clone/bloc/profile_cubit/profile_cubit.dart';
 import 'package:whatsapp_clone/constant/app_constant.dart';
 import 'package:whatsapp_clone/constant/color_constant.dart';
+import 'package:whatsapp_clone/constant/route_constant.dart';
 import 'package:whatsapp_clone/model/user_res_req_model.dart';
 
 // ignore: must_be_immutable
@@ -70,7 +71,11 @@ class ProfileScreen extends StatelessWidget {
                         trailing: Icons.edit,
                         title: "About",
                         subtitle: mobileState.user!.about!,
-                        callback: () {},
+                        callback: () => Navigator.pushNamed(
+                            context, RouteConstant.aboutPage,
+                            arguments: {
+                              "about": mobileState.user!.about!,
+                            }),
                       ),
                       _listTileSection(
                         leading: Icons.call,
@@ -102,6 +107,7 @@ class ProfileScreen extends StatelessWidget {
     return await showModalBottomSheet(
       context: context,
       elevation: 10,
+      isScrollControlled: true,
       backgroundColor: appBarColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -112,7 +118,8 @@ class ProfileScreen extends StatelessWidget {
       builder: (BuildContext context) {
         if (isChangeProfile) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -165,7 +172,11 @@ class ProfileScreen extends StatelessWidget {
           );
         }
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            left: 16,
+            right: 16,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -183,11 +194,13 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      autofocus: true,
                       initialValue: name ?? mobileNumber,
-                      enableIMEPersonalizedLearning: true,
+                      textAlign: TextAlign.start,
                       decoration: const InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                       ),
                       onChanged: (value) {
                         if (name == null) {

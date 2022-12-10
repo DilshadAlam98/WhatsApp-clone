@@ -12,4 +12,5 @@ class RouteConstant {
   static const String selectContactToCall = '/selectContactToCall';
   static const String profileScreen = '/profileScreen';
   static const String appTheme = '/appTheme';
+  static const String aboutPage = '/about';
 }

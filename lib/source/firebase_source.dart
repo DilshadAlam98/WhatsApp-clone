@@ -69,4 +69,11 @@ class FirebaseSource {
         .doc(_currentUserUid)
         .update(fieldToBeUpdate);
   }
+
+  Future<void> updateAbout(String? about) async {
+    return _firestore
+        .collection(Collection.users)
+        .doc(_currentUserUid)
+        .update({"about": about});
+  }
 }

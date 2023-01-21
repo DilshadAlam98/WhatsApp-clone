@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -16,6 +17,7 @@ import 'package:whatsapp_clone/model/user_res_req_model.dart';
 import 'package:whatsapp_clone/repository/firebase_repo.dart';
 import 'package:whatsapp_clone/utils/dialog_utils.dart';
 import 'package:whatsapp_clone/utils/local_preference.dart';
+
 part 'onboarding_state.dart';
 
 class OnboardingCubit extends Cubit<OnboardingState> {
@@ -28,7 +30,10 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   final _localPreference = LocalPreference();
 
   void getCountries() async {
-    emit(state.copyWith(networkState: NetworkState.loading));
+    emit(state.copyWith(
+      networkState: NetworkState.loading,
+      buttonController: RoundedLoadingButtonController(),
+    ));
 
     try {
       final country = await _firebaseRepo.getCountries();
